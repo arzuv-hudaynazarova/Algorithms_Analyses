@@ -1,6 +1,7 @@
 # Algoritma Analyses and Desing ks2
 
 # Ödev_1'in açıklaması ve zaman karmaşıklığı:
+
  C dilinde yazılmış bir koddur. Kod, çeşitli işlemler yapmak için fonksiyonları kullanır. İşte kodun detaylı bir açıklaması ve fonksiyonlarının zaman karmaşıklığı:
 
 main(): Bu, programın başladığı ana fonksiyondur. Bu fonksiyon, rastgele sayılar oluşturarak iki farklı dizi oluşturur, bunları sıralar, ortalamalarını alır ve en sonunda bir matris oluşturarak Floyd-Warshall algoritmasıyla en kısa yolunu bulur.
@@ -31,4 +32,24 @@ Not: Burada belirtilen zaman karmaşıklıkları, genellikle big-O gösterimi ol
 
 
 # Ödev_2 'nin açıklaması ve zaman karmaşıklığı:
+
+ C programı, öncelikle belirlenen boyutta bir dizi oluşturur ve bu diziye rastgele sayılar atar. Ardından, dizi elemanlarını sıralar ve ortalamasını hesaplar. Ayrıca, belirli bir grafın en kısa yollarını bulur ve belirlenen bir eşik değerinin altındaki yolları yazar. İşlemlerin tamamlanmasının ne kadar sürdüğünü hesaplar ve yazdırır.
+
+main fonksiyonu: Programın başladığı ve bittiği yerdir. Burada, dizi ve graf tanımlanır ve çeşitli işlemler gerçekleştirilir.
+
+dizi_uret fonksiyonu: Belirtilen boyutta bir diziye rastgele sayılar atar.
+
+sirala fonksiyonu: Dizi elemanlarını küçükten büyüğe doğru sıralar.
+
+ortalama_bul fonksiyonu: Dizinin ortalama değerini hesaplar.
+
+en_kisa_yollari_bul fonksiyonu: Floyd-Warshall algoritması kullanılarak belirli bir grafın en kısa yollarını bulur.
+
+dizi_yazdir, graf_yazdir ve esik_alti_yollari_yazdir fonksiyonları: İsimlerinden de anlaşılacağı gibi, bu fonksiyonlar çeşitli çıktıları yazdırır.
+
+Zaman karmaşıklığına gelince, en karmaşık işlem Floyd-Warshall algoritmasıdır. Bu algoritma, her bir düğüm çifti için tüm diğer düğümleri kontrol ettiği için zaman karmaşıklığı O(n^3)'dir. Burada n, grafın düğüm sayısıdır.
+
+Diğer işlemler (dizi oluşturma, sıralama, ortalamanın hesaplanması vb.) genellikle daha az karmaşıktır. Dizi oluşturma ve ortalamanın hesaplanması O(n) karmaşıklığa sahiptir, burada n dizi boyutudur. Sıralama işlemi ise tipik olarak O(n^2) karmaşıklığa sahip bubble sort algoritması kullanılıyor.
+
+Bu durumda, genel zaman karmaşıklığı, en karmaşık işlemin karmaşıklığı olan O(n^3) olacaktır.
 
