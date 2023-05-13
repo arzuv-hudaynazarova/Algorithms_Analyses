@@ -1,4 +1,3 @@
-# Algorithms_Analyses
 # Algoritma Analyses and Desing ks2
 
 # Ödev_1'in açıklaması ve zaman karmaşıklığı:
