@@ -2,7 +2,7 @@
 
 # Ödev.c'nin açıklaması ve zaman karmaşıklığı:
 
-Ödev.c de, belirli bir boyuttaki bir dizi üzerinde çeşitli işlemler gerçekleştiriyor. Öncelikle, kodun yapısını ve karmaşıklığını anlamak için her bir fonksiyonu ayrı ayrı inceleyelim.
+Ödev.c de, belirli bir boyuttaki bir dizi üzerinde çeşitli işlemler gerçekleştiriyor. Öncelikle, kodun yapısını ve karmaşıklığını anlamak için her bir fonksiyonu ayrı ayrı yazalım.
 
 1. diziOlustur: Bu fonksiyon, belirli bir boyuttaki bir dizi oluşturur ve bu diziye rastgele sayılar atar. Karmaşıklık O(n) olarak hesaplanır çünkü her bir eleman üzerinde sadece bir işlem gerçekleştirilir.
 
