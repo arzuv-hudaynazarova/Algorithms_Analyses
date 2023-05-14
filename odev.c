@@ -124,7 +124,7 @@ int bolme(int dizi[], int baslangic, int bitis) {
     return (i + 1);
 }
 
-
+// Dizi yazdırma fonksiyonu
 void diziYazdir(int dizi[], int boyut) {
     for (int i = 0; i < boyut; i++) {
         printf("%d ", dizi[i]);
@@ -134,7 +134,7 @@ void diziYazdir(int dizi[], int boyut) {
     }
 }
 
-
+// Matris yazdırma fonksiyonu
 void matrisYazdir(int matris[][GRAF_BOYUTU], int boyut) {
     for (int i = 0; i < boyut; i++) {
         for (int j = 0; j < boyut; j++) {
@@ -149,7 +149,7 @@ void matrisYazdir(int matris[][GRAF_BOYUTU], int boyut) {
     }
 }
 
-
+// Dizi içerisindeki sayıların toplamını hesaplar
 double toplamiBul(int dizi[], int boyut) {
     int t = 0, toplam = 0, sayi = 0;
     for (int i = 0; i < boyut; i++) {
@@ -167,7 +167,7 @@ double toplamiBul(int dizi[], int boyut) {
     return (double)t/sayi;
 }
 
-//Floyd-Warshall Algoritması
+// Floyd-Warshall algoritması ile en kısa yolu hesaplar
 void enKisaYoluHesapla(int graf[][GRAF_BOYUTU], int mesafe[][GRAF_BOYUTU], int boyut) {
     for (int i = 0; i < boyut; i++) {
         for (int j = 0; j < boyut; j++) {
@@ -196,6 +196,7 @@ void enKisaYoluHesapla(int graf[][GRAF_BOYUTU], int mesafe[][GRAF_BOYUTU], int b
 }
 
 
+// Sonuçları yazdırma fonksiyonu
 void sonucYazdir(int matris[][GRAF_BOYUTU], int boyut, int t) {
     for (int i = 0; i < boyut; i++) {
         for (int j = 0; j < boyut; j++) {
