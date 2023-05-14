@@ -85,7 +85,7 @@ void diziOlustur(int dizi[], int boyut) {
     }
 }
 
-
+// Quick sort algoritması
 void hizliSiralama(int dizi[], int baslangic, int bitis) {
     if (baslangic < bitis) {
         int pi = bolme(dizi, baslangic, bitis);
@@ -156,7 +156,7 @@ double toplamiBul(int dizi[], int boyut) {
     return (double)t/sayi;
 }
 
-
+//Floyd-Warshall Algoritması
 void enKisaYoluHesapla(int graf[][GRAF_BOYUTU], int mesafe[][GRAF_BOYUTU], int boyut) {
     for (int i = 0; i < boyut; i++) {
         for (int j = 0; j < boyut; j++) {
