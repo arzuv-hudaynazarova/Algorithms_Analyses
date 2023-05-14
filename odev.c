@@ -10,7 +10,7 @@
 // Maksimum değer için sonsuz sayı
 #define SONSUZ INT_MAX
 
-// Kullanacagimiz fonksyonlari olusturyoruz
+// Kullanacagimiz fonksyonlari olusturulur
 void diziOlustur(int dizi[], int boyut);
 void hizliSiralama(int dizi[], int baslangic, int bitis);
 int bolme(int dizi[], int baslangic, int bitis);
@@ -50,7 +50,7 @@ int main() {
 
     baslangic = clock();
 
-    // Dizi oluştur
+    // Dizi oluşturulur
     diziOlustur(dizi, DIZI_BOYUTU);
     printf("Olusturulan Dizi:\n");
     diziYazdir(dizi, DIZI_BOYUTU);
