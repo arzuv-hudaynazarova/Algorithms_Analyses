@@ -10,6 +10,7 @@
 // Maksimum değer için sonsuz sayı
 #define SONSUZ INT_MAX
 
+// Kullanacagimiz fonksyonlari olusturyoruz
 void diziOlustur(int dizi[], int boyut);
 void hizliSiralama(int dizi[], int baslangic, int bitis);
 int bolme(int dizi[], int baslangic, int bitis);
@@ -19,9 +20,12 @@ void diziYazdir(int dizi[], int boyut);
 void matrisYazdir(int g[][GRAF_BOYUTU], int boyut);
 void sonucYazdir(int d[][GRAF_BOYUTU], int boyut, int t);
 
+// Ana fonksiyon
 int main() {
     
+    // Değişken tanımlamaları
     int dizi[DIZI_BOYUTU];
+    // Graf matrisi
     int g[GRAF_BOYUTU][GRAF_BOYUTU] = {
         { 0, 10,  3,  0,  0,  5,  0, 17,  0, 22},
         {10,  0,  5,  0,  2,  0, 13,  0,  0,  0},
@@ -46,27 +50,34 @@ int main() {
 
     baslangic = clock();
 
+    // Dizi oluştur
     diziOlustur(dizi, DIZI_BOYUTU);
-    printf("Dizi:\n");
+    printf("Olusturulan Dizi:\n");
     diziYazdir(dizi, DIZI_BOYUTU);
 
+    // Hızlı sıralama (Quick Sort) algoritması uygulanır
     hizliSiralama(dizi, 0, DIZI_BOYUTU - 1);
-    printf("\nHizliSiralama Sonuc:\n");
+    printf("\nHizli Siralama Algoritmasinin Sonucu:\n");
     diziYazdir(dizi, DIZI_BOYUTU);
 
-     t = toplamiBul(dizi, DIZI_BOYUTU);
-    printf("\nToplamiBul Sonuc: %d\n", t);
+    // Dizi elemanlarının toplamının ortalaması hesaplanır
+    t = toplamiBul(dizi, DIZI_BOYUTU);
+    printf("\nDizi Toplaminin Ortalamasi: %d\n", t);
 
-    printf("\nG:\n");
+    // Grafiğin matris gösterimi yazdırılır
+    printf("\nGraf Matris Gösterimi:\n");
     matrisYazdir(g, GRAF_BOYUTU);
 
+    // Floyd-Warshall algoritması uygulanır ve sonuç matrisi hesaplanır
     enKisaYoluHesapla(g, d, GRAF_BOYUTU);
-    printf("\nEnKisaYoluHesapla Sonuc:\n");
+    printf("\nFloyd-Warshall Algoritmasinin Sonuc Matrisi:\n");
     matrisYazdir(d, GRAF_BOYUTU);
 
-    printf("\n%d icin sonuc:\n", t);
+    // Belirtilen t değerine göre sonuçlar yazdırılır
+    printf("\n%d Degerine Gore En Kisa Yollar:\n", t);
     sonucYazdir(d, GRAF_BOYUTU, t);
 
+    // Çalışma süresi hesaplanır ve yazdırılır
     bitis = clock();
     zaman = ((double)(bitis - baslangic)) / CLOCKS_PER_SEC;
     printf("\nCalisma Suresi: %f sn\n", zaman);
@@ -74,7 +85,7 @@ int main() {
     return 0;
 }
 
-
+// Rastgele sayılar ile dizi oluşturur.
 void diziOlustur(int dizi[], int boyut) {
     if (boyut < 0) {
         printf("Hata: boyut negatif olamaz.\n");
@@ -85,7 +96,7 @@ void diziOlustur(int dizi[], int boyut) {
     }
 }
 
-// Quick sort algoritması
+// Quick sort algoritması ile dizi sıralama fonksiyonu
 void hizliSiralama(int dizi[], int baslangic, int bitis) {
     if (baslangic < bitis) {
         int pi = bolme(dizi, baslangic, bitis);
@@ -94,7 +105,7 @@ void hizliSiralama(int dizi[], int baslangic, int bitis) {
     }
 }
 
-
+// Quick sort algoritması için bölme fonksiyonu
 int bolme(int dizi[], int baslangic, int bitis) {
     int pivot = dizi[bitis];
     int i = (baslangic - 1);
@@ -194,5 +205,4 @@ void sonucYazdir(int matris[][GRAF_BOYUTU], int boyut, int t) {
         }
     }
 }
-
 
