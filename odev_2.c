@@ -5,22 +5,24 @@
 
 #define DIZI_BOYUTU 20
 #define GRAF_BOYUTU 10
-#define MAX_SAYI 10
+#define MAX_ACIKLAMA 10
 
 // Maksimum değer için sonsuz sayı
 #define SONSUZ INT_MAX
 
-void dizi_uret(int dizi[], int boyut);
-void sirala(int dizi[], int boyut);
-int ortalama_bul(int dizi[], int boyut);
-void en_kisa_yollari_bul(int g[][GRAF_BOYUTU], int d[][GRAF_BOYUTU], int boyut);
-void dizi_yazdir(int dizi[], int boyut);
-void graf_yazdir(int g[][GRAF_BOYUTU], int boyut);
-void esik_alti_yollari_yazdir(int d[][GRAF_BOYUTU], int boyut, int esik);
+void diziOlustur(int dizi[], int boyut);
+void hizliSiralama(int dizi[], int baslangic, int bitis);
+int bolme(int dizi[], int baslangic, int bitis);
+double toplamiBul(int dizi[], int boyut);
+void enKisaYoluHesapla(int g[][GRAF_BOYUTU], int d[][GRAF_BOYUTU], int boyut);
+void diziYazdir(int dizi[], int boyut);
+void matrisYazdir(int g[][GRAF_BOYUTU], int boyut);
+void sonucYazdir(int d[][GRAF_BOYUTU], int boyut, int t);
 
 int main() {
+    
     int dizi[DIZI_BOYUTU];
-    int graf[GRAF_BOYUTU][GRAF_BOYUTU] = {
+    int g[GRAF_BOYUTU][GRAF_BOYUTU] = {
         { 0, 10,  3,  0,  0,  5,  0, 17,  0, 22},
         {10,  0,  5,  0,  2,  0, 13,  0,  0,  0},
         { 3,  5,  0,  2,  0,  4,  0, 21,  0, 11},
@@ -33,98 +35,139 @@ int main() {
         {22,  0, 11,  0,  0,  0,  0,  0,  5,  0}
     };
     int d[GRAF_BOYUTU][GRAF_BOYUTU];
-    int esik;
+    int t;
 
-    // Rastgele sayı üretici için seed
+    // Rastgele sayı üreteci için seed
     srand(time(NULL));
 
     // Çalışma süresinin hesaplanması
     clock_t baslangic, bitis;
-    double sure;
+    double zaman;
 
     baslangic = clock();
 
-    // Dizi oluşturma ve yazdırma
-    dizi_uret(dizi, DIZI_BOYUTU);
+    diziOlustur(dizi, DIZI_BOYUTU);
     printf("Dizi:\n");
-    dizi_yazdir(dizi, DIZI_BOYUTU);
+    diziYazdir(dizi, DIZI_BOYUTU);
 
-    // Diziyi sıralama ve yazdırma
-    sirala(dizi, DIZI_BOYUTU);
-    printf("\nSirali Dizi:\n");
-    dizi_yazdir(dizi, DIZI_BOYUTU);
+    hizliSiralama(dizi, 0, DIZI_BOYUTU - 1);
+    printf("\nHizliSiralama Sonuc:\n");
+    diziYazdir(dizi, DIZI_BOYUTU);
 
-    // Ortalamayı hesaplama ve yazdırma
-    esik = ortalama_bul(dizi, DIZI_BOYUTU);
-    printf("\nOrtalama: %d\n", esik);
+     t = toplamiBul(dizi, DIZI_BOYUTU);
+    printf("\nToplamiBul Sonuc: %d\n", t);
 
-    // Grafiği yazdırma
-    printf("\nGraf:\n");
-    graf_yazdir(graf, GRAF_BOYUTU);
+    printf("\nG:\n");
+    matrisYazdir(g, GRAF_BOYUTU);
 
-    // En kısa yolları bulma ve yazdırma
-    en_kisa_yollari_bul(graf, d, GRAF_BOYUTU);
-    printf("\nEn Kisa Yollar:\n");
-    graf_yazdir(d, GRAF_BOYUTU);
+    enKisaYoluHesapla(g, d, GRAF_BOYUTU);
+    printf("\nEnKisaYoluHesapla Sonuc:\n");
+    matrisYazdir(d, GRAF_BOYUTU);
 
-    // Belirlenen eşiğin altındaki yolları yazdırma
-    printf("\nEşik (%d) altındaki yollar:\n", esik);
-    esik_alti_yollari_yazdir(d, GRAF_BOYUTU, esik);
+    printf("\n%d icin sonuc:\n", t);
+    sonucYazdir(d, GRAF_BOYUTU, t);
 
     bitis = clock();
-    sure = ((double)(bitis - baslangic)) / CLOCKS_PER_SEC;
-    printf("\nCalisma Suresi: %f sn\n", sure);
+    zaman = ((double)(bitis - baslangic)) / CLOCKS_PER_SEC;
+    printf("\nCalisma Suresi: %f sn\n", zaman);
 
     return 0;
 }
 
-// Diziye rastgele sayılar atayan fonksiyon
-void dizi_uret(int dizi[], int boyut) {
+
+void diziOlustur(int dizi[], int boyut) {
+    if (boyut < 0) {
+        printf("Hata: boyut negatif olamaz.\n");
+        return;
+    }
     for (int i = 0; i < boyut; i++) {
-        dizi[i] = rand() % (2 * MAX_SAYI) - MAX_SAYI;
+        dizi[i] = rand() % (2 * MAX_ACIKLAMA) - MAX_ACIKLAMA;
     }
 }
 
-// Diziyi sıralayan fonksiyon
-void sirala(int dizi[], int boyut) {
-    for (int i = 0; i < boyut - 1; i++) {
-        for (int j = 0; j < boyut - 1 - i; j++) {
-            if (dizi[j] > dizi[j + 1]) {
-                int gecici = dizi[j];
-                dizi[j] = dizi[j + 1];
-                dizi[j + 1] = gecici;
-            }
+
+void hizliSiralama(int dizi[], int baslangic, int bitis) {
+    if (baslangic < bitis) {
+        int pi = bolme(dizi, baslangic, bitis);
+        hizliSiralama(dizi, baslangic, pi - 1);
+        hizliSiralama(dizi, pi + 1, bitis);
+    }
+}
+
+
+int bolme(int dizi[], int baslangic, int bitis) {
+    int pivot = dizi[bitis];
+    int i = (baslangic - 1);
+
+    for (int j = baslangic; j <= bitis - 1; j++) {
+        if (dizi[j] < pivot) {
+            i++;
+            int gecici = dizi[i];
+            dizi[i] = dizi[j];
+            dizi[j] = gecici;
         }
     }
+    int gecici = dizi[i + 1];
+    dizi[i + 1] = dizi[bitis];
+    dizi[bitis] = gecici;
+    return (i + 1);
 }
 
-// Dizinin ortalama değerini bulan fonksiyon
-int ortalama_bul(int dizi[], int boyut) {
-    int toplam = 0, gecici_toplam = 0, sayac=0;
+
+void diziYazdir(int dizi[], int boyut) {
     for (int i = 0; i < boyut; i++) {
-        if (gecici_toplam + dizi[i] > 0) {
-            gecici_toplam = gecici_toplam + dizi[i];
-        }
-        else {
-            gecici_toplam = 0;
-        }
-        if (gecici_toplam > toplam) {
-            toplam = gecici_toplam;
-            sayac++;
+        printf("%d ", dizi[i]);
+        if ((i + 1) % 10 == 0) {
+            printf("\n");
         }
     }
-    return toplam/sayac;
 }
 
 
-// Grafın en kısa yollarını bulan fonksiyon
-void en_kisa_yollari_bul(int g[][GRAF_BOYUTU], int d[][GRAF_BOYUTU], int boyut) {
+void matrisYazdir(int matris[][GRAF_BOYUTU], int boyut) {
     for (int i = 0; i < boyut; i++) {
         for (int j = 0; j < boyut; j++) {
-            if (g[i][j] != 0) {
-                d[i][j] = g[i][j];
-            } else {
-                d[i][j] = SONSUZ;
+            if (matris[i][j] == SONSUZ) {
+                printf("INF ");
+            }
+            else {
+                printf("%3d ", matris[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+double toplamiBul(int dizi[], int boyut) {
+    int t = 0, toplam = 0, sayi = 0;
+    for (int i = 0; i < boyut; i++) {
+        if (toplam + dizi[i] > 0) {
+            toplam = toplam + dizi[i];
+        }
+        else {
+            toplam = 0;
+        }
+        if (toplam > t) {
+            t = toplam;
+            sayi++;
+        }
+    }
+    return (double)t/sayi;
+}
+
+
+void enKisaYoluHesapla(int graf[][GRAF_BOYUTU], int mesafe[][GRAF_BOYUTU], int boyut) {
+    for (int i = 0; i < boyut; i++) {
+        for (int j = 0; j < boyut; j++) {
+            if (i == j) {
+                mesafe[i][j] = 0;
+            }
+            else if (graf[i][j] != 0) {
+                mesafe[i][j] = graf[i][j];
+            }
+            else {
+                mesafe[i][j] = SONSUZ;
             }
         }
     }
@@ -132,42 +175,21 @@ void en_kisa_yollari_bul(int g[][GRAF_BOYUTU], int d[][GRAF_BOYUTU], int boyut) 
     for (int k = 0; k < boyut; k++) {
         for (int i = 0; i < boyut; i++) {
             for (int j = 0; j < boyut; j++) {
-                if (d[i][j] > d[i][k] + d[k][j]) {
-                    d[i][j] = d[i][k] + d[k][j];
+                if (mesafe[i][k] != SONSUZ && mesafe[k][j] != SONSUZ &&
+                    mesafe[i][k] + mesafe[k][j] < mesafe[i][j]) {
+                    mesafe[i][j] = mesafe[i][k] + mesafe[k][j];
                 }
             }
         }
     }
 }
 
-// Diziyi yazdıran fonksiyon
-void dizi_yazdir(int dizi[], int boyut) {
-    for (int i = 0; i < boyut; i++) {
-        printf("%d ", dizi[i]);
-    }
-    printf("\n");
-}
 
-// Grafiği yazdıran fonksiyon
-void graf_yazdir(int g[][GRAF_BOYUTU], int boyut) {
+void sonucYazdir(int matris[][GRAF_BOYUTU], int boyut, int t) {
     for (int i = 0; i < boyut; i++) {
         for (int j = 0; j < boyut; j++) {
-            if (g[i][j] == SONSUZ) {
-                printf("inf ");
-            } else {
-                printf("%d ", g[i][j]);
-            }
-        }
-        printf("\n");
-    }
-}
-
-// Belirlenen eşiğin altındaki yolları yazdıran fonksiyon
-void esik_alti_yollari_yazdir(int d[][GRAF_BOYUTU], int boyut, int esik) {
-    for (int i = 0; i < boyut; i++) {
-        for (int j = 0; j < boyut; j++) {
-            if (i != j && d[i][j] <= esik) {
-                printf("(%d, %d): %d\n", i, j, d[i][j]);
+            if (i != j && matris[i][j] < t) {
+                printf("%c -> %c: %d\n", 'A' + i, 'A' + j, matris[i][j]);
             }
         }
     }
